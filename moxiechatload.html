@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>ChatKit</title>
+    <title>Moxie ChatKit Load</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script>
     <style>
@@ -21,15 +21,20 @@
     </style>
   </head>
   <body>
-    <openai-chatkit token="" workflow_id=""></openai-chatkit>
+    <openai-chatkit id="moxie-chat"></openai-chatkit>
+
     <script>
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
       const workflowId = urlParams.get('workflow_id');
-      
-      const kit = document.querySelector('openai-chatkit');
-      kit.token = token;
-      kit.workflow_id = workflowId;
+
+      if (token && workflowId) {
+        const chat = document.getElementById("moxie-chat");
+        chat.setAttribute("token", token);
+        chat.setAttribute("workflow_id", workflowId);
+      } else {
+        document.body.innerHTML = "<h2 style='color:white;text-align:center;padding-top:50px;'>Missing token or workflow_id in URL</h2>";
+      }
     </script>
   </body>
 </html>
