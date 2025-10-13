@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moxie Chat</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000; /* optional dark background */
+    }
+    openai-chatkit {
+      height: 100vh;
+      width: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="chatkit-container">
+    <!-- ChatKit will mount here -->
+  </div>
+
+  <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script>
+  <script>
+    // Extract token and workflow_id from query string
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    const workflowId = params.get('workflow_id');
+
+    if (token && workflowId) {
+      const chatkit = document.createElement('openai-chatkit');
+      chatkit.setAttribute('token', token);
+      chatkit.setAttribute('workflow_id', workflowId);
+      document.getElementById('chatkit-container').appendChild(chatkit);
+    } else {
+      document.body.innerHTML = '<h2 style="color:white; text-align:center; padding-top:2rem;">Missing token or workflow_id</h2>';
+    }
+  </script>
+</body>
+</html>
