@@ -1,48 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Moxie ChatKit</title>
-  <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      background-color: #000;
-    }
-    #chat-container {
-      height: 100%;
-      width: 100%;
-    }
-  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Moxie ChatKit</title>
+    
+    <!-- Load OpenAI ChatKit Web Component -->
+    <script type="module">
+      import "https://chat.openai.com/cdn/chatkit/chatkit-0.1.5.js";
 
-  <!-- ✅ Correct script tag to load OpenAI ChatKit web component -->
-  <script src="https://cdn.jsdelivr.net/npm/@openai/chatkit-js/dist/web/openai-chatkit.js"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("token");
-      const workflowId = params.get("workflow_id");
+      window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+        const workflow = params.get("workflow_id");
 
-      if (!token || !workflowId) {
-        console.error("Missing token or workflow_id in URL");
-        return;
+        if (token && workflow) {
+          const chatElement = document.createElement("openai-chatkit");
+          chatElement.clientToken = token;
+          chatElement.workflowId = workflow;
+          chatElement.dark = true;
+          chatElement.brandColor = "#F27C38";
+          chatElement.style.height = "100vh";
+          chatElement.style.display = "block";
+          document.body.appendChild(chatElement);
+        } else {
+          document.body.innerHTML = "<h2 style='color:white;padding:2rem;'>Missing token or workflow_id in URL</h2>";
+        }
+      };
+    </script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        font-family: sans-serif;
       }
-
-      const chat = document.createElement("openai-chatkit");
-      chat.setAttribute("client-secret", token);
-      chat.setAttribute("workflow-id", workflowId);
-      chat.setAttribute("dark", "true");
-      chat.style.height = "100%";
-      chat.style.width = "100%";
-
-      document.getElementById("chat-container").appendChild(chat);
-    });
-  </script>
-</head>
-
-<body>
-  <div id="chat-container"></div>
-</body>
+      h2 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+  </body>
 </html>
-
