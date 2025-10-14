@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Moxie ChatKit</title>
-  <script type="module">
-  import 'https://esm.sh/@openai/chatkit';
-  </script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Moxie ChatKit</title>
+    <script type="module">
+      import "@openai/chatkit";
 
-</head>
-<body style="margin:0; padding:0; background:#111; color:#fff;">
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      const workflowId = params.get("workflow_id");
 
-  <div id="chat-root"></div>
-
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    const workflowId = params.get('workflow_id');
-
-    if (!token || !workflowId) {
-      document.body.innerHTML = "<p style='color:red; font-size:18px;'>Missing token or workflow_id in URL</p>";
-    } else {
-      const chatEl = document.createElement('openai-chatkit');
-      chatEl.setAttribute('client-secret', token);
-      chatEl.setAttribute('workflow-id', workflowId);
-      chatEl.setAttribute('dark', '');
-      chatEl.style.width = '100vw';
-      chatEl.style.height = '100vh';
-      document.getElementById('chat-root').appendChild(chatEl);
-    }
-  </script>
-
-</body>
+      if (!token || !workflowId) {
+        document.body.innerHTML = "<p style='color:red; font-family: sans-serif;'>Missing token or workflow_id in URL</p>";
+      } else {
+        const chatEl = document.createElement("openai-chatkit");
+        chatEl.setAttribute("client-secret", token);
+        chatEl.setAttribute("workflow-id", workflowId);
+        chatEl.setAttribute("dark", "");
+        chatEl.style.width = "100%";
+        chatEl.style.height = "100vh";
+        document.body.appendChild(chatEl);
+      }
+    </script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #000; /* fallback for dark */
+      }
+    </style>
+  </head>
+  <body></body>
 </html>
+
 
