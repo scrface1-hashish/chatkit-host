@@ -1,33 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Moxie ChatKit</title>
-    <script type="module">
-      import "https://cdn.jsdelivr.net/npm/@openai/chatkit@latest";
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moxie ChatKit</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background-color: #000;
+    }
+    #chat-container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <script type="module">
+    import { defineCustomElements } from "https://cdn.jsdelivr.net/npm/@openai/chatkit-js/+esm";
+
+    // Wait for DOM and component definition
+    window.addEventListener("DOMContentLoaded", async () => {
+      await defineCustomElements();
 
       const params = new URLSearchParams(window.location.search);
       const token = params.get("token");
-      const workflow_id = params.get("workflow_id");
+      const workflowId = params.get("workflow_id");
 
-      if (token && workflow_id) {
-        const chatEl = document.createElement("openai-chatkit");
-        chatEl.setAttribute("client-secret", token);
-        chatEl.setAttribute("workflow-id", workflow_id);
-        chatEl.setAttribute("dark", "true"); // optional
-        chatEl.style.width = "100vw";
-        chatEl.style.height = "100vh";
-        chatEl.style.border = "none";
-        document.body.appendChild(chatEl);
-      } else {
-        document.body.innerHTML = `<div style="color: white; padding: 2rem;">Missing token or workflow_id in URL.</div>`;
+      if (!token || !workflowId) {
+        console.error("Missing token or workflow_id in URL");
+        return;
       }
-    </script>
-    <style>
-      body {
-        margin: 0;
-        background-color: #000;
-      }
-    </style>
-  </head>
-  <body></body>
+
+      const chat = document.createElement("openai-chatkit");
+      chat.clientSecret = token;
+      chat.workflowId = workflowId;
+      chat.dark = true;
+      chat.style = "height: 100%; width: 100%;";
+
+      document.getElementById("chat-container").appendChild(chat);
+    });
+  </script>
+</head>
+<body>
+  <div id="chat-container"></div>
+</body>
 </html>
