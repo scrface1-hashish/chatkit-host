@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Moxie ChatKit</title>
-    
-    <!-- Load OpenAI ChatKit Web Component -->
-    <script type="module">
-      import "https://chat.openai.com/cdn/chatkit/chatkit-0.1.5.js";
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moxie ChatKit</title>
 
-      window.onload = () => {
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get("token");
-        const workflow = params.get("workflow_id");
+  <!-- ✅ Load ChatKit Web Component (CORS-safe) -->
+  <script src="https://chat.openai.com/cdn/chatkit/chatkit-0.1.5.js"></script>
 
-        if (token && workflow) {
-          const chatElement = document.createElement("openai-chatkit");
-          chatElement.clientToken = token;
-          chatElement.workflowId = workflow;
-          chatElement.dark = true;
-          chatElement.brandColor = "#F27C38";
-          chatElement.style.height = "100vh";
-          chatElement.style.display = "block";
-          document.body.appendChild(chatElement);
-        } else {
-          document.body.innerHTML = "<h2 style='color:white;padding:2rem;'>Missing token or workflow_id in URL</h2>";
-        }
-      };
-    </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+    }
 
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        background-color: #000;
-        font-family: sans-serif;
-      }
-      h2 {
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-  </body>
+    openai-chatkit {
+      display: block;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .error {
+      color: white;
+      padding: 2rem;
+      font-family: sans-serif;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const workflow = params.get("workflow_id");
+
+    if (token && workflow) {
+      const el = document.createElement("openai-chatkit");
+      el.clientToken = token;
+      el.workflowId = workflow;
+      el.dark = true;
+      el.brandColor = "#F27C38"; // Moxie brand orange
+      document.body.appendChild(el);
+    } else {
+      document.body.innerHTML = `<div class="error">❌ Missing token or workflow_id in URL</div>`;
+    }
+  </script>
+</body>
 </html>
