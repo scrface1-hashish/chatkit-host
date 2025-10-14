@@ -1,41 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Moxie ChatKit</title>
-    <script src="https://chat.openai.com/chatkit/sdk.js"></script>
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background: #111;
-      }
-      openai-chatkit {
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
-    </style>
-  </head>
-  <body>
-    <openai-chatkit id="chatkit"></openai-chatkit>
+<head>
+  <meta charset="UTF-8" />
+  <title>Moxie ChatKit</title>
+  <script src="https://cdn.openai.com/chatkit/chatkit-0.1.1.js"></script>
+</head>
+<body style="margin:0; padding:0; background:#111; color:#fff;">
 
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("token");
-      const workflowId = params.get("workflow_id");
+  <div id="chat-root"></div>
 
-      if (!token || !workflowId) {
-        document.body.innerHTML =
-          "<p style='color:red'>Missing token or workflow_id in URL</p>";
-      } else {
-        const chatkit = document.getElementById("chatkit");
-        chatkit.setAttribute("client-token", token);
-        chatkit.setAttribute("workflow-id", workflowId);
-        chatkit.setAttribute("dark", "true");
-        chatkit.setAttribute("style", "height:100%;width:100%;");
-      }
-    </script>
-  </body>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    const workflowId = params.get('workflow_id');
+
+    if (!token || !workflowId) {
+      document.body.innerHTML = "<p style='color:red; font-size:18px;'>Missing token or workflow_id in URL</p>";
+    } else {
+      const chatEl = document.createElement('openai-chatkit');
+      chatEl.setAttribute('client-secret', token);
+      chatEl.setAttribute('workflow-id', workflowId);
+      chatEl.setAttribute('dark', '');
+      chatEl.style.width = '100vw';
+      chatEl.style.height = '100vh';
+      document.getElementById('chat-root').appendChild(chatEl);
+    }
+  </script>
+
+</body>
 </html>
