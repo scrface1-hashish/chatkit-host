@@ -2,56 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Moxie ChatKit Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatKit Test</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background: #111;
-      color: #0f0;
-      font-family: monospace;
-    }
-    #log {
-      padding: 1rem;
-      white-space: pre-wrap;
+      height: 100%;
     }
     openai-chatkit {
+      display: block;
       width: 100%;
       height: 100vh;
-      display: block;
-      background: white;
     }
   </style>
 </head>
 <body>
-  <div id="log">Loading ChatKit...\n</div>
-  <openai-chatkit id="chatkit"></openai-chatkit>
-  
+  <!-- Define the ChatKit element (empty) -->
+  <openai-chatkit id="chat"></openai-chatkit>
+
+  <!-- Load ChatKit JS -->
+  <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script>
+
+  <!-- After load, bind token & workflow_id -->
   <script>
-    const log = msg => document.getElementById('log').innerText += msg + "\n";
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+      const workflowId = params.get('workflow_id');
 
-    const token = new URLSearchParams(location.search).get("token");
-    const workflowId = new URLSearchParams(location.search).get("workflow_id");
+      if (!token || !workflowId) {
+        document.body.innerHTML = "<h2 style='color:red;'>Missing token or workflow_id in URL</h2>";
+        return;
+      }
 
-    log("Token: " + (token || "[MISSING]"));
-    log("Workflow ID: " + (workflowId || "[MISSING]"));
-
-    if (!token || !workflowId) {
-      log("Missing token or workflow_id. Aborting.");
-    } else {
-      const tag = document.getElementById('chatkit');
-      tag.setAttribute('token', token);
-      tag.setAttribute('workflow_id', workflowId);
-      log("Tag attributes set.");
-    }
-  </script>
-
-  <script 
-    src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
-    onload="log('✅ ChatKit SDK Loaded')"
-    onerror="log('❌ Failed to load ChatKit SDK')">
+      const chat = document.getElementById('chat');
+      chat.setAttribute('token', token);
+      chat.setAttribute('workflow_id', workflowId);
+    });
   </script>
 </body>
 </html>
-
