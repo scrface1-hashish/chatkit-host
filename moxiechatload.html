@@ -6,22 +6,21 @@
   <title>Moxie ChatKit</title>
   <style>
     html, body {
-      height: 100%;
       margin: 0;
+      height: 100%;
       background-color: #000;
     }
     #chat-container {
-      width: 100%;
       height: 100%;
+      width: 100%;
     }
   </style>
-  <script type="module">
-    import { defineCustomElements } from "https://cdn.jsdelivr.net/npm/@openai/chatkit-js/+esm";
 
-    // Wait for DOM and component definition
-    window.addEventListener("DOMContentLoaded", async () => {
-      await defineCustomElements();
+  <!-- ✅ Correct script tag to load OpenAI ChatKit web component -->
+  <script src="https://cdn.jsdelivr.net/npm/@openai/chatkit-js/dist/web/openai-chatkit.js"></script>
 
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
       const params = new URLSearchParams(window.location.search);
       const token = params.get("token");
       const workflowId = params.get("workflow_id");
@@ -32,15 +31,17 @@
       }
 
       const chat = document.createElement("openai-chatkit");
-      chat.clientSecret = token;
-      chat.workflowId = workflowId;
-      chat.dark = true;
-      chat.style = "height: 100%; width: 100%;";
+      chat.setAttribute("client-secret", token);
+      chat.setAttribute("workflow-id", workflowId);
+      chat.setAttribute("dark", "true");
+      chat.style.height = "100%";
+      chat.style.width = "100%";
 
       document.getElementById("chat-container").appendChild(chat);
     });
   </script>
 </head>
+
 <body>
   <div id="chat-container"></div>
 </body>
