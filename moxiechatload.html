@@ -1,56 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
     <title>Moxie ChatKit</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module">
+      import "https://cdn.jsdelivr.net/npm/@openai/chatkit@latest";
 
-    <!-- Enforce full body viewport and background fallback -->
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      const workflow_id = params.get("workflow_id");
+
+      if (token && workflow_id) {
+        const chatEl = document.createElement("openai-chatkit");
+        chatEl.setAttribute("client-secret", token);
+        chatEl.setAttribute("workflow-id", workflow_id);
+        chatEl.setAttribute("dark", "true"); // optional
+        chatEl.style.width = "100vw";
+        chatEl.style.height = "100vh";
+        chatEl.style.border = "none";
+        document.body.appendChild(chatEl);
+      } else {
+        document.body.innerHTML = `<div style="color: white; padding: 2rem;">Missing token or workflow_id in URL.</div>`;
+      }
+    </script>
     <style>
-      html,
       body {
         margin: 0;
-        padding: 0;
-        height: 100%;
-        background-color: #000; /* fallback background */
-      }
-
-      openai-chatkit {
-        display: block;
-        width: 100%;
-        height: 100%;
+        background-color: #000;
       }
     </style>
   </head>
-
-  <body>
-    <script type="module">
-      import('https://esm.sh/@openai/chatkit@latest')
-        .then(() => {
-          const params = new URLSearchParams(window.location.search);
-          const token = params.get("token");
-          const workflowId = params.get("workflow_id");
-
-          if (!token || !workflowId) {
-            document.body.innerHTML = `
-              <p style="color: red; font-family: sans-serif; padding: 2rem;">
-                Error: Missing <code>token</code> or <code>workflow_id</code> in URL.
-              </p>`;
-            return;
-          }
-
-          const chatEl = document.createElement("openai-chatkit");
-          chatEl.setAttribute("client-secret", token);
-          chatEl.setAttribute("workflow-id", workflowId);
-          chatEl.setAttribute("dark", "");
-          document.body.appendChild(chatEl);
-        })
-        .catch((err) => {
-          document.body.innerHTML = `
-            <p style="color: red; font-family: sans-serif; padding: 2rem;">
-              Failed to load ChatKit: ${err.message}
-            </p>`;
-        });
-    </script>
-  </body>
+  <body></body>
 </html>
