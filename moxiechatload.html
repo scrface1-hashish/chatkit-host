@@ -4,45 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Moxie ChatKit</title>
-
-  <!-- ✅ Load ChatKit Web Component (CORS-safe) -->
-  <script src="https://chat.openai.com/cdn/chatkit/chatkit-0.1.5.js"></script>
-
+  <script src="https://cdn.openai.com/chatkit/1.0.0/chatkit.js"></script>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-    }
-
-    openai-chatkit {
-      display: block;
-      height: 100vh;
-      width: 100vw;
-    }
-
-    .error {
-      color: white;
-      padding: 2rem;
-      font-family: sans-serif;
-      font-size: 1.2rem;
-    }
+    body { margin: 0; padding: 0; background: linear-gradient(#f0f8ff, #e8f5e8); }
+    openai-chatkit { display: block; height: 100vh; width: 100vw; }
+    .error { color: #666; padding: 2rem; font-family: sans-serif; text-align: center; }
   </style>
 </head>
-
 <body>
   <script>
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     const workflow = params.get("workflow_id");
-
     if (token && workflow) {
       const el = document.createElement("openai-chatkit");
       el.clientToken = token;
       el.workflowId = workflow;
       el.dark = true;
-      el.brandColor = "#F27C38"; // Moxie brand orange
+      el.brandColor = "#F27C38";
       document.body.appendChild(el);
+      el.initialize().catch(err => {
+        console.error(err);
+        document.body.innerHTML = `<div class="error">Init failed: ${err.message}</div>`;
+      });
     } else {
       document.body.innerHTML = `<div class="error">❌ Missing token or workflow_id in URL</div>`;
     }
